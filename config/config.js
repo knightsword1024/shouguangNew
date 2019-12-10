@@ -60,11 +60,11 @@ export default {
     '@antv/data-set': 'DataSet',
   },
   // proxy: {
-  //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
-  //   },
+  //   '/iothub': {
+  //     target: 'http://148.70.11.196:12221',
+  //     changeOrigin: true
+  //     // pathRewrite: { '^/iothub': '' },
+  //   }
   // },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
