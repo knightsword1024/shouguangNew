@@ -12,6 +12,13 @@ class debugPage extends Component {
     value1: '',
     value2: '',
   };
+  componentDidMount = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 0 },
+    });
+  };
   handleTopic = () => {
     if (event && event.target && event.target.value) {
       let value = event.target.value;

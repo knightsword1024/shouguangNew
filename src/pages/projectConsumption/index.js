@@ -214,6 +214,10 @@ class projectConsumption extends Component {
   componentDidMount = () => {
     const { dispatch } = this.props;
     dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 0 },
+    });
+    dispatch({
       type: 'manage/fetchAllProject',
       payload: {},
     });

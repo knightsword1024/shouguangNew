@@ -193,6 +193,10 @@ class productManage extends Component {
   componentDidMount = () => {
     const { dispatch } = this.props;
     dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 0 },
+    });
+    dispatch({
       type: 'product/fetchAllProduct',
       payload: {},
     });

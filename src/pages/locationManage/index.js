@@ -309,6 +309,10 @@ export default class locationManage extends Component {
     const { dispatch } = this.props;
     const { projectid } = this.state;
     dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 1 },
+    });
+    dispatch({
       type: 'manage/fetchlocations',
       payload: { projectid: projectid },
     }).then(res => {

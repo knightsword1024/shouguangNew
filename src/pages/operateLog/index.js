@@ -76,6 +76,10 @@ export default class operateLog extends PureComponent {
     //   payload: {  projectid: projectid },
     // })
     dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 1 },
+    });
+    dispatch({
       type: 'manage/fetchSearchValue',
       payload: {
         ...formValues,

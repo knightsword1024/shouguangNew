@@ -16,15 +16,8 @@ export default class projectSelect extends Component {
   };
 
   changeProject = value => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'dynamicmenu/getDynamicmenu',
-      payload: { value: value },
-    }).then(res => {
-      if (res) {
-        router.push(`/devicemanage`);
-      }
-    });
+    localStorage.setItem('menuNum', value);
+    router.push(`/devicemanage`);
   };
   render() {
     const {

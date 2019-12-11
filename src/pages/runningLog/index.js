@@ -54,7 +54,7 @@ class CreateForm extends Component {
     );
   }
 }
-
+//运行日志主界面
 @connect(({ manage, loading }) => ({ manage, loading: loading.models.manage }))
 class DataStatistics extends Component {
   formValues = {
@@ -74,6 +74,10 @@ class DataStatistics extends Component {
   componentDidMount = () => {
     const { dispatch } = this.props;
     const { formValues, projectid } = this.state;
+    dispatch({
+      type: 'dynamicmenu/getDynamicmenu',
+      payload: { value: 1 },
+    });
     dispatch({
       type: 'manage/fetchAllRunningLog',
       payload: { ...formValues, projectid: projectid },
