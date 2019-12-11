@@ -4,6 +4,7 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import router from 'umi/router';
 
 export default {
   namespace: 'login',
@@ -20,11 +21,12 @@ export default {
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === 1000) {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;
+        router.push(`/homepage`);
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
@@ -67,11 +69,20 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      localStorage.setItem('token', payload.data.token);
+      var status = '';
+      var currentAuthority = '';
+      if (payload.code == 1000) {
+        status = 'ok';
+        currentAuthority = 'admin';
+      } else {
+        status = 'error';
+        currentAuthority = 'guest';
+      }
       setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        status: status,
       };
     },
   },

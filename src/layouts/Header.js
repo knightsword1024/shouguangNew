@@ -43,7 +43,11 @@ class HeaderView extends PureComponent {
   };
 
   handleNoticeClear = type => {
-    message.success(`${formatMessage({ id: 'component.noticeIcon.cleared' })} ${formatMessage({ id: `component.globalHeader.${type}` })}`);
+    message.success(
+      `${formatMessage({ id: 'component.noticeIcon.cleared' })} ${formatMessage({
+        id: `component.globalHeader.${type}`,
+      })}`
+    );
     const { dispatch } = this.props;
     dispatch({
       type: 'global/clearNotices',
@@ -115,33 +119,20 @@ class HeaderView extends PureComponent {
   };
 
   render() {
-    const { isMobile, handleMenuCollapse, setting } = this.props;
-    const { navTheme, layout, fixedHeader } = setting;
+    const { handleMenuCollapse, setting } = this.props;
+    const { layout, fixedHeader } = setting;
     const { visible } = this.state;
     const isTop = layout === 'topmenu';
     const width = this.getHeadWidth();
     const HeaderDom = visible ? (
       <Header style={{ padding: 0, width }} className={fixedHeader ? styles.fixedHeader : ''}>
-        {isTop && !isMobile ? (
-          <TopNavHeader
-            theme={navTheme}
-            mode="horizontal"
-            Authorized={Authorized}
-            onCollapse={handleMenuCollapse}
-            onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
-            {...this.props}
-          />
-        ) : (
-          <GlobalHeader
-            onCollapse={handleMenuCollapse}
-            onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
-            {...this.props}
-          />
-        )}
+        <GlobalHeader
+          onCollapse={handleMenuCollapse}
+          onNoticeClear={this.handleNoticeClear}
+          onMenuClick={this.handleMenuClick}
+          onNoticeVisibleChange={this.handleNoticeVisibleChange}
+          {...this.props}
+        />
       </Header>
     ) : null;
     return (

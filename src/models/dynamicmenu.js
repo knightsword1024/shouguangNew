@@ -8,9 +8,9 @@ export default {
   },
 
   effects: {
-    *getDynamicmenu({payload}, { call, put }) {
-      localStorage.setItem('menuNUm', payload.value)
-      const response = yield call(getDynamicmenu,payload);
+    *getDynamicmenu({ payload }, { call, put }) {
+      localStorage.setItem('menuNum', payload.value);
+      const response = yield call(getDynamicmenu, payload);
       yield put({
         type: 'getDynamicmenuSuccess',
         payload: response,

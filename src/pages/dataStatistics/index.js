@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Card, Form, Col, Row, Select, Input, DatePicker } from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import echarts from 'echarts';
 import { connect } from 'dva';
 
 const { Search } = Input;

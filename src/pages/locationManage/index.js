@@ -292,9 +292,9 @@ export default class locationManage extends Component {
     offset: 0,
     count: 10,
   };
-
+  projectid = localStorage.getItem('token');
   state = {
-    projectid: '1',
+    projectid: this.projectid,
     formValues: this.formValues,
     modalVisible: false,
     modalDeleteVisible: false,

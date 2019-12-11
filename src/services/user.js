@@ -5,5 +5,7 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  return request('/iothub/query/userinfo', {
+    method: 'post',
+  });
 }

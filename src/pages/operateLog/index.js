@@ -19,8 +19,9 @@ export default class operateLog extends PureComponent {
     count: 10,
   };
 
+  projectid = localStorage.getItem('token');
   state = {
-    projectid: '1',
+    projectid: this.projectid,
     formValues: this.formValues,
     sendValue: [],
     typeValue: [],

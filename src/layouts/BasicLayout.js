@@ -1,256 +1,253 @@
-import React from 'react'
-import { Layout } from 'antd'
-import DocumentTitle from 'react-document-title'
-import isEqual from 'lodash/isEqual'
-import memoizeOne from 'memoize-one'
-import { connect } from 'dva'
-import { ContainerQuery } from 'react-container-query'
-import classNames from 'classnames'
-import pathToRegexp from 'path-to-regexp'
-import { enquireScreen, unenquireScreen } from 'enquire-js'
-import { formatMessage } from 'umi/locale'
-import SiderMenu from '@/components/SiderMenu'
-import Authorized from '@/utils/Authorized'
-import SettingDrawer from '@/components/SettingDrawer'
-import logo from '../assets/logo.svg'
-import Footer from './Footer'
-import Header from './Header'
-import Context from './MenuContext'
-import Exception403 from '../pages/Exception/403'
+import React from 'react';
+import { Layout } from 'antd';
+import DocumentTitle from 'react-document-title';
+import isEqual from 'lodash/isEqual';
+import memoizeOne from 'memoize-one';
+import { connect } from 'dva';
+import { ContainerQuery } from 'react-container-query';
+import classNames from 'classnames';
+import pathToRegexp from 'path-to-regexp';
+import { enquireScreen, unenquireScreen } from 'enquire-js';
+import { formatMessage } from 'umi/locale';
+import SiderMenu from '@/components/SiderMenu';
+import Authorized from '@/utils/Authorized';
+import SettingDrawer from '@/components/SettingDrawer';
+import logo from '../assets/logo.svg';
+import Footer from './Footer';
+import Header from './Header';
+import Context from './MenuContext';
+import Exception403 from '../pages/Exception/403';
 
-const { Content } = Layout
+const { Content } = Layout;
 
 // Conversion router to menu.
-function formatter (data, parentPath = '', parentAuthority, parentName) {
+function formatter(data, parentPath = '', parentAuthority, parentName) {
   return data
     .map(item => {
-      let locale = 'menu'
+      let locale = 'menu';
       if (parentName && item.name) {
-        locale = `${parentName}.${item.name}`
+        locale = `${parentName}.${item.name}`;
       } else if (item.name) {
-        locale = `menu.${item.name}`
+        locale = `menu.${item.name}`;
       } else if (parentName) {
-        locale = parentName
+        locale = parentName;
       }
       if (item.path) {
         const result = {
           ...item,
           locale,
-          authority: item.authority || parentAuthority
-        }
+          authority: item.authority || parentAuthority,
+        };
         if (item.routes) {
           const children = formatter(
             item.routes,
             `${parentPath}${item.path}/`,
             item.authority,
             locale
-          )
+          );
           // Reduce memory usage
-          result.children = children
+          result.children = children;
         }
-        delete result.routes
-        return result
+        delete result.routes;
+        return result;
       }
 
-      return null
+      return null;
     })
-    .filter(item => item)
+    .filter(item => item);
 }
 
-const memoizeOneFormatter = memoizeOne(formatter, isEqual)
+const memoizeOneFormatter = memoizeOne(formatter, isEqual);
 
 const query = {
   'screen-xs': {
-    maxWidth: 575
+    maxWidth: 575,
   },
   'screen-sm': {
     minWidth: 576,
-    maxWidth: 767
+    maxWidth: 767,
   },
   'screen-md': {
     minWidth: 768,
-    maxWidth: 991
+    maxWidth: 991,
   },
   'screen-lg': {
     minWidth: 992,
-    maxWidth: 1199
+    maxWidth: 1199,
   },
   'screen-xl': {
     minWidth: 1200,
-    maxWidth: 1599
+    maxWidth: 1599,
   },
   'screen-xxl': {
-    minWidth: 1600
-  }
-}
+    minWidth: 1600,
+  },
+};
 
 class BasicLayout extends React.PureComponent {
-  constructor (props) {
-    super(props)
-    this.getPageTitle = memoizeOne(this.getPageTitle)
-    this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual)
-    this.breadcrumbNameMap = this.getBreadcrumbNameMap()
-    this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual)
+  constructor(props) {
+    super(props);
+    this.getPageTitle = memoizeOne(this.getPageTitle);
+    this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
+    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
+    this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual);
   }
 
   state = {
     rendering: true,
     isMobile: false,
-    menuData: this.getMenuData()
-  }
+    menuData: this.getMenuData(),
+  };
 
-  componentDidMount () {
-    const { dispatch } = this.props
+  componentDidMount() {
+    const { dispatch } = this.props;
     dispatch({
-      type: 'user/fetchCurrent'
-    })
+      type: 'user/fetchCurrent',
+    });
     dispatch({
-      type: 'setting/getSetting'
-    })
+      type: 'setting/getSetting',
+    });
     // 请求动态显示
     dispatch({
       type: 'dynamicmenu/getDynamicmenu',
-      payload: { value: 0 }
-    })
+      payload: { value: 0 },
+    });
     this.renderRef = requestAnimationFrame(() => {
       this.setState({
-        rendering: false
-      })
-    })
+        rendering: false,
+      });
+    });
     this.enquireHandler = enquireScreen(mobile => {
-      const { isMobile } = this.state
+      const { isMobile } = this.state;
       if (isMobile !== mobile) {
         this.setState({
-          isMobile: mobile
-        })
+          isMobile: mobile,
+        });
       }
-    })
+    });
   }
 
-  componentDidUpdate (preProps) {
+  componentDidUpdate(preProps) {
     // After changing to phone mode,
     // if collapsed is true, you need to click twice to display
-    this.breadcrumbNameMap = this.getBreadcrumbNameMap()
-    const { isMobile } = this.state
-    const { collapsed } = this.props
+    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
+    const { isMobile } = this.state;
+    const { collapsed } = this.props;
     if (isMobile && !preProps.isMobile && !collapsed) {
-      this.handleMenuCollapse(false)
+      this.handleMenuCollapse(false);
     }
   }
 
-  componentWillUnmount () {
-    cancelAnimationFrame(this.renderRef)
-    unenquireScreen(this.enquireHandler)
+  componentWillUnmount() {
+    cancelAnimationFrame(this.renderRef);
+    unenquireScreen(this.enquireHandler);
   }
 
-  getContext () {
-    const { location } = this.props
+  getContext() {
+    const { location } = this.props;
     return {
       location,
-      breadcrumbNameMap: this.breadcrumbNameMap
-    }
+      breadcrumbNameMap: this.breadcrumbNameMap,
+    };
   }
 
-  getMenuData () {
+  getMenuData() {
     const {
-      route: { routes }
-    } = this.props
-    return memoizeOneFormatter(routes)
+      route: { routes },
+    } = this.props;
+    return memoizeOneFormatter(routes);
   }
 
   /**
    * 获取面包屑映射
    * @param {Object} menuData 菜单配置
    */
-  getBreadcrumbNameMap () {
-    const routerMap = {}
+  getBreadcrumbNameMap() {
+    const routerMap = {};
     const mergeMenuAndRouter = data => {
       data.forEach(menuItem => {
         if (menuItem.children) {
-          mergeMenuAndRouter(menuItem.children)
+          mergeMenuAndRouter(menuItem.children);
         }
         // Reduce memory usage
-        routerMap[menuItem.path] = menuItem
-      })
-    }
-    mergeMenuAndRouter(this.getMenuData())
-    return routerMap
+        routerMap[menuItem.path] = menuItem;
+      });
+    };
+    mergeMenuAndRouter(this.getMenuData());
+    return routerMap;
   }
 
   matchParamsPath = pathname => {
     const pathKey = Object.keys(this.breadcrumbNameMap).find(key =>
       pathToRegexp(key).test(pathname)
-    )
-    return this.breadcrumbNameMap[pathKey]
-  }
+    );
+    return this.breadcrumbNameMap[pathKey];
+  };
 
   getPageTitle = pathname => {
-    const currRouterData = this.matchParamsPath(pathname)
+    const currRouterData = this.matchParamsPath(pathname);
 
     if (!currRouterData) {
-      return 'Ant Design Pro'
+      return 'Ant Design Pro';
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
-      defaultMessage: currRouterData.name
-    })
-    return `${message} - Ant Design Pro`
-  }
+      defaultMessage: currRouterData.name,
+    });
+    return `${message} - Ant Design Pro`;
+  };
 
   getLayoutStyle = () => {
-    const { isMobile } = this.state
-    const { fixSiderbar, collapsed, layout } = this.props
+    const { isMobile } = this.state;
+    const { fixSiderbar, collapsed, layout } = this.props;
     if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       return {
-        paddingLeft: collapsed ? '80px' : '256px'
-      }
+        paddingLeft: collapsed ? '80px' : '256px',
+      };
     }
-    return null
-  }
+    return null;
+  };
 
   getContentStyle = () => {
-    const { fixedHeader } = this.props
+    const { fixedHeader } = this.props;
     return {
       margin: '24px 24px 0',
-      paddingTop: fixedHeader ? 64 : 0
-    }
-  }
+      paddingTop: fixedHeader ? 64 : 0,
+    };
+  };
 
   handleMenuCollapse = collapsed => {
-    const { dispatch } = this.props
+    const { dispatch } = this.props;
     dispatch({
       type: 'global/changeLayoutCollapsed',
-      payload: collapsed
-    })
-  }
+      payload: collapsed,
+    });
+  };
 
-  renderSettingDrawer () {
+  renderSettingDrawer() {
     // Do not render SettingDrawer in production
     // unless it is deployed in preview.pro.ant.design as demo
-    const { rendering } = this.state
-    if (
-      (rendering || process.env.NODE_ENV === 'production') &&
-      APP_TYPE !== 'site'
-    ) {
-      return null
+    const { rendering } = this.state;
+    if ((rendering || process.env.NODE_ENV === 'production') && APP_TYPE !== 'site') {
+      return null;
     }
-    return <SettingDrawer />
+    return <SettingDrawer />;
   }
 
-  render () {
+  render() {
     const {
       dynamicmenu,
       navTheme,
       layout: PropsLayout,
       children,
-      location: { pathname }
-    } = this.props
-    const { menuData } = dynamicmenu
+      location: { pathname },
+    } = this.props;
+    const { menuData } = dynamicmenu;
     // 新增这里， 作为我们返回动态菜单之后的类型转换
-    const menuTree = memoizeOneFormatter(menuData)
-    const { isMobile } = this.state
-    const isTop = PropsLayout === 'topmenu'
-    const routerConfig = this.matchParamsPath(pathname)
+    const menuTree = memoizeOneFormatter(menuData);
+    const { isMobile } = this.state;
+    const isTop = PropsLayout === 'topmenu';
+    const routerConfig = this.matchParamsPath(pathname);
     const layout = (
       // {/* {isTop && !isMobile ? null : ( */}
 
@@ -258,7 +255,7 @@ class BasicLayout extends React.PureComponent {
       <Layout
         style={{
           ...this.getLayoutStyle(),
-          minHeight: '100vh'
+          minHeight: '100vh',
         }}
       >
         <Header
@@ -280,7 +277,7 @@ class BasicLayout extends React.PureComponent {
           />
           <Content style={this.getContentStyle()}>
             <Authorized
-              authority={routerConfig.authority}
+              // authority={routerConfig.authority}
               noMatch={<Exception403 />}
             >
               {children}
@@ -289,7 +286,7 @@ class BasicLayout extends React.PureComponent {
         </Layout>
         <Footer />
       </Layout>
-    )
+    );
     return (
       <React.Fragment>
         <DocumentTitle title={this.getPageTitle(pathname)}>
@@ -303,7 +300,7 @@ class BasicLayout extends React.PureComponent {
         </DocumentTitle>
         {this.renderSettingDrawer()}
       </React.Fragment>
-    )
+    );
   }
 }
 // 这里新增了dynamicmenu、loading
@@ -312,5 +309,5 @@ export default connect(({ dynamicmenu, loading, global, setting }) => ({
   loading: loading.effects['dynamicmenu/getDynamicmenu'],
   collapsed: global.collapsed,
   layout: setting.layout,
-  ...setting
-}))(BasicLayout)
+  ...setting,
+}))(BasicLayout);

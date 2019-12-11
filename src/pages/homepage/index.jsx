@@ -128,9 +128,10 @@ class HomePage extends Component {
       payload: {},
     });
   };
-  handleClick = name => {
+  handleClick = id => {
+    localStorage.setItem('menuNum', id);
     const { dispatch } = this.props;
-    dispatch(push(`/projectManage/${projectName[name]}/devicemanage`));
+    dispatch(push(`/devicemanage`));
   };
   handleSearch = () => {
     const { dispatch } = this.props;
@@ -154,11 +155,12 @@ class HomePage extends Component {
       handleSearch: this.handleSearch,
       handleModalVisible: this.handleModalVisible,
     };
+    console.log(projectData);
     return (
       <div className={style.main}>
-        {projectData.map(({ name, sn }) => {
+        {projectData.map(({ name, id }) => {
           return (
-            <div key={sn} className={style.card} onClick={this.handleClick.bind(this, name)}>
+            <div key={id} className={style.card} onClick={this.handleClick.bind(this, id)}>
               <Card bordered="true" hoverable="true" cover={<img alt="example" src={project} />}>
                 <Meta title={name} />
               </Card>

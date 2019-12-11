@@ -59,13 +59,13 @@ export default {
   externals: {
     '@antv/data-set': 'DataSet',
   },
-  // proxy: {
-  //   '/iothub': {
-  //     target: 'http://148.70.11.196:12221',
-  //     changeOrigin: true
-  //     // pathRewrite: { '^/iothub': '' },
-  //   }
-  // },
+  proxy: {
+    '/iothub': {
+      target: 'http://148.70.11.196:12221',
+      changeOrigin: true,
+      // pathRewrite: { '^/iothub': '' },
+    },
+  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,

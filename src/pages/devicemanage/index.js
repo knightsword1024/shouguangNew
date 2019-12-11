@@ -662,8 +662,9 @@ class devicemanage extends Component {
     offset: 0,
     count: 10,
   };
+  projectid = localStorage.getItem('menuNum');
   state = {
-    projectid: '1',
+    projectid: this.projectid,
     formValues: this.formValues,
     modalVisible: false,
     modalServeVisible: false,
