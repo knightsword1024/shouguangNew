@@ -170,7 +170,7 @@ class alerts extends Component {
     const { dispatch } = this.props;
     dispatch({
       type: 'dynamicmenu/getDynamicmenu',
-      payload: { value: 0 },
+      payload: { menutype: 0 },
     });
     dispatch({
       type: 'manage/fetchAllProject',

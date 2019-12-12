@@ -53,21 +53,25 @@ export default {
           {
             path: '/devicemanage',
             name: '设备管理',
+            icon: 'database',
             component: './devicemanage',
           },
           {
             path: '/operateLog',
             name: '操作日志(!)',
+            icon: 'align-center',
             component: './operateLog',
           },
           {
             path: '/runningLog',
             name: '运行日志',
+            icon: 'redo',
             component: './runningLog',
           },
           {
             path: '/locationManage',
             name: '位置管理',
+            icon: 'environment',
             component: './locationManage',
           },
           {

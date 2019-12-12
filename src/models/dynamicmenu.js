@@ -21,7 +21,7 @@ export default {
     getDynamicmenuSuccess(state, action) {
       return {
         ...state,
-        menuData: action.payload.data,
+        menuData: action.payload.data.menu,
       };
     },
   },

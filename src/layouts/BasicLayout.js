@@ -246,12 +246,8 @@ class BasicLayout extends React.PureComponent {
     // 新增这里， 作为我们返回动态菜单之后的类型转换
     const menuTree = memoizeOneFormatter(menuData);
     const { isMobile } = this.state;
-    const isTop = PropsLayout === 'topmenu';
     const routerConfig = this.matchParamsPath(pathname);
     const layout = (
-      // {/* {isTop && !isMobile ? null : ( */}
-
-      // {/* // )} */}
       <Layout
         style={{
           ...this.getLayoutStyle(),
@@ -269,7 +265,7 @@ class BasicLayout extends React.PureComponent {
           <SiderMenu
             logo={logo}
             Authorized={Authorized}
-            theme={navTheme}
+            theme="light"
             onCollapse={this.handleMenuCollapse}
             menuData={menuTree}
             isMobile={isMobile}
@@ -298,7 +294,7 @@ class BasicLayout extends React.PureComponent {
             )}
           </ContainerQuery>
         </DocumentTitle>
-        {this.renderSettingDrawer()}
+        {/* {this.renderSettingDrawer()} */}
       </React.Fragment>
     );
   }

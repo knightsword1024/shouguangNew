@@ -745,7 +745,7 @@ class devicemanage extends Component {
     const { projectid, formValues } = this.state;
     dispatch({
       type: 'dynamicmenu/getDynamicmenu',
-      payload: { value: 1 },
+      payload: { menutype: 1 },
     });
     dispatch({
       type: 'manage/fetchAllDevices',

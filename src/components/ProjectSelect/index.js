@@ -17,18 +17,19 @@ export default class projectSelect extends Component {
 
   changeProject = value => {
     localStorage.setItem('menuNum', value);
-    router.push(`/devicemanage`);
+    router.push(`/devicemanage/${value}`);
   };
   render() {
     const {
       project: { projectTotal },
     } = this.props;
+    console.log(projectTotal);
     return (
       <div className={styles.select}>
         <Select placeholder="选择项目" onChange={this.changeProject.bind(this)}>
-          {projectTotal.map(({ projectId, name }) => {
+          {projectTotal.map(({ id, name }) => {
             return (
-              <Option key={projectId} value={projectId}>
+              <Option key={id} value={id}>
                 {name}
               </Option>
             );

@@ -91,6 +91,7 @@ class SettingDrawer extends PureComponent {
   };
 
   changeSetting = (key, value) => {
+    console.log(value);
     const { setting } = this.props;
     const nextState = { ...setting };
     nextState[key] = value;
