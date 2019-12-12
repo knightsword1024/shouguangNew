@@ -17,13 +17,13 @@ export default class projectSelect extends Component {
 
   changeProject = value => {
     localStorage.setItem('menuNum', value);
-    router.push(`/devicemanage/${value}`);
+    router.push(`/devicemanage`);
+    location.reload([false]);
   };
   render() {
     const {
       project: { projectTotal },
     } = this.props;
-    console.log(projectTotal);
     return (
       <div className={styles.select}>
         <Select placeholder="选择项目" onChange={this.changeProject.bind(this)}>

@@ -56,6 +56,7 @@ export default {
   theme: {
     'primary-color': defaultSettings.primaryColor,
   },
+  history: 'hash',
   externals: {
     '@antv/data-set': 'DataSet',
   },
@@ -94,7 +95,7 @@ export default {
     },
   },
   manifest: {
-    name: 'ant-design-pro',
+    name: '物联管理平台',
     background_color: '#FFF',
     description: 'An out-of-box UI solution for enterprise applications as a React boilerplate.',
     display: 'standalone',

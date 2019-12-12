@@ -213,6 +213,7 @@ class projectConsumption extends Component {
   ];
   componentDidMount = () => {
     const { dispatch } = this.props;
+    localStorage.setItem('menuNum', 0);
     dispatch({
       type: 'dynamicmenu/getDynamicmenu',
       payload: { menutype: 0 },

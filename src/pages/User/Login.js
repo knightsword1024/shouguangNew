@@ -66,13 +66,11 @@ class LoginPage extends Component {
             this.loginForm = form;
           }}
         >
-          {login.status === 'error' &&
-            !submitting &&
-            this.renderMessage('账户或密码错误（admin/888888）')}
-          <UserName name="user" placeholder="admin/user" />
+          {login.status === 'error' && !submitting && this.renderMessage('账户或密码错误')}
+          <UserName name="user" placeholder="请输入用户名" />
           <Password
             name="passwd"
-            placeholder="888888/123456"
+            placeholder="请输入密码"
             onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
           />
           <Submit loading={submitting}>

@@ -122,6 +122,7 @@ class HomePage extends Component {
     modalVisible: false,
   };
   componentDidMount = () => {
+    localStorage.setItem('menuNum', 0);
     const { dispatch } = this.props;
     dispatch({
       type: 'dynamicmenu/getDynamicmenu',

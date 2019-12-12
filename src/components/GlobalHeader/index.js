@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import { Icon } from 'antd';
 import Link from 'umi/link';
 import Debounce from 'lodash-decorators/debounce';
@@ -6,6 +7,7 @@ import styles from './index.less';
 import RightContent from './RightContent';
 import logo from '@/assets/logo.png';
 
+@connect(({ project }) => ({ project }))
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
@@ -24,7 +26,17 @@ export default class GlobalHeader extends PureComponent {
     this.triggerResizeEvent();
   };
   render() {
-    const { collapsed } = this.props;
+    const {
+      collapsed,
+      project: { projectTotal },
+    } = this.props;
+    const menuNum = localStorage.getItem('menuNum');
+    var menuName = '';
+    for (let i of projectTotal) {
+      if (i.id == menuNum) {
+        menuName = i.name;
+      }
+    }
     return (
       <div className={styles.header}>
         <Icon
@@ -32,6 +44,12 @@ export default class GlobalHeader extends PureComponent {
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
+        {menuNum != 0 && (
+          <span>
+            当前项目：
+            {menuName}
+          </span>
+        )}
         <Link to="/" className={styles.logo} key="logo">
           <img src={logo} alt="logo" width="32" />
           <span>物联管理平台</span>

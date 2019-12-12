@@ -22,7 +22,7 @@ export default [
         component: './homepage',
       },
       {
-        path: '/devicemanage/:id',
+        path: '/devicemanage',
         name: '设备管理',
         icon: 'database',
         component: './devicemanage',
