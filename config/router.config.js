@@ -81,6 +81,7 @@ export default [
         icon: 'exclamation-circle',
         component: './debug',
       },
+
       {
         path: '/',
         redirect: '/homepage',

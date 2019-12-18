@@ -810,7 +810,7 @@ class devicemanage extends Component {
   lookData = row => {
     const { projectid } = this.state;
     router.push({
-      pathname: `/projectManage/sanyuanzhucun/datastatistics/${row.did}`,
+      pathname: `/datastatistics/${row.did}`,
       state: { did: row.did, devtyp: row.devtyp, projectid: projectid },
     });
   };

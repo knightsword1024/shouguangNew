@@ -60,7 +60,7 @@ export default {
         routerRedux.push({
           pathname: '/user/login',
           search: stringify({
-            redirect: window.location.href,
+            redirect: window.location.hash,
           }),
         })
       );

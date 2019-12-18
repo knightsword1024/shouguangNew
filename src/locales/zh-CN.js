@@ -71,6 +71,7 @@ export default {
   'component.noticeIcon.cleared': '清空了',
   'component.noticeIcon.empty': '暂无数据',
   menu: '菜单',
+  'menu.人员管理': '人员管理',
   'menu.home': '首页',
   'menu.项目首页': '首页',
   'menu.项目统计': '项目统计',

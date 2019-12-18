@@ -57,6 +57,9 @@ export default {
     'primary-color': defaultSettings.primaryColor,
   },
   history: 'hash',
+  // base:'/shouguang',
+  // outputPath:'/shouguang',
+  // publicPath:'/shouguang/',
   externals: {
     '@antv/data-set': 'DataSet',
   },

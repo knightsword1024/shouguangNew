@@ -84,4 +84,19 @@ export default {
       });
     }
   },
+  'POST /api/query/allPeople': (req, res) => {
+    if (req.body.value == 1) {
+      res.send({
+        data: [
+          {
+            name: '王明远',
+            id: '20190001',
+            department: '文文',
+            position: '职员',
+            phoneNumber: '18769733025',
+          },
+        ],
+      });
+    }
+  },
 };
